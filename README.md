@@ -50,7 +50,7 @@ machine CatAPI {
     on FETCH re-enter loading
   }
   final resolved
-  rejected {
+  state rejected {
     on FETCH -> loading
   }
 }
