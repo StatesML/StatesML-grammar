@@ -67,5 +67,5 @@ machine CatAPI {
   * hover detail with types, description and documentation
   * autocomplete
   * visualization and step simulation
-* `xstate-StatesML` - a TypeScript library to generate [XState](https://xstate.js.org) compatible machine definitions from `.stateml` and `.statesml.json` files.
+* `xstate-StatesML` - a TypeScript library to generate [XState](https://xstate.js.org) compatible machine definitions from `.statesml` and `.statesml.json` files.
 * `babel-plugin-statesml-tag` - a Babel plugin to compile StatesML tagged literals into their graph representation.
