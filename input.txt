@@ -1,0 +1,44 @@
+// Adapted from https://xstate.js.org/docs/guides/final.html#parallel-states
+machine 🚦 {
+  initial -> green
+
+  state green {
+    on TIMER -> yellow
+  }
+  state yellow {
+    on TIMER -> red
+  }
+  parallel red {
+    state crosswalk_north {
+      initial -> walk_north
+
+      state walk_north {
+        on PED_WAIT -> wait_north
+      }
+      state wait_north {
+        on PED_STOP -> stop_north
+      }
+      final stop_north
+
+      onDone {
+        stopCrosswalkNorth()
+      }
+    }
+    state crosswalk_east {
+      initial -> walk_east
+
+      state walk_east {
+        on PED_WAIT -> wait_east
+      }
+      state wait_east {
+        on PED_STOP -> stop_east
+      }
+      final stop_east
+
+      onDone {
+        stopCrosswalkEast()
+      }
+    }
+    onDone -> green
+  }
+}
