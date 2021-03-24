@@ -32,26 +32,46 @@ It is intended to define a shared syntax and interchange representation in order
 ## Example
 
 ```statesml
-machine CatAPI {
-  state idle {
-    on FETCH -> loading
-  }
-  state loading {
-    invoke fetchCat() {
-      onDone -> resolved {
-        setCatPicture()
+// Adapted from: https://xstate-catalogue.vercel.app/machines/form-input
+machine formInput {
+  initial -> active
+  
+  parallel active {
+    on DISABLE -> disabled
+
+    state focus {
+      initial -> unfocused
+
+      state focused {
+        on BLUR -> unfocused
       }
-      onError -> rejected
+      state unfocused {
+        on FOCUS -> focused
+      }
     }
-    on PROGRESS {
-      updateProgress()
+
+    state validation {
+      initial -> pending
+
+      on CHANGE -> pending {
+        assignValueToContext()
+      }
+
+      state pending {
+        on REPORT_INVALID -> invalid {
+          assignReasonToErrorMessage()
+        }
+
+        invoke validateField {
+          onDone -> valid
+        }
+      }
+      state valid
+      state invalid
     }
-    on CANCEL -> idle
-    on FETCH re-enter loading
   }
-  final resolved
-  state rejected {
-    on FETCH -> loading
+  state disabled {
+    on ENABLE -> active
   }
 }
 ```
