@@ -59,7 +59,7 @@ entry_definition: Entry action_block;
 
 exit_definition: Exit action_block;
 
-always_definition: Always transition_condition? action_block?;
+always_definition: Always re_enterable_transition_clause? transition_condition? action_block?;
 
 transition_definition: On event_name re_enterable_transition_clause? transition_condition? action_block?;
 
