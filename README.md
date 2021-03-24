@@ -62,7 +62,7 @@ machine formInput {
           assignReasonToErrorMessage()
         }
 
-        invoke validateField {
+        invoke validateField() {
           onDone -> valid
         }
       }
