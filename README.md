@@ -28,7 +28,7 @@ It is intended to define a shared syntax and data interchange representation in 
 * Leave condition / service / assignment / action / result / etc. procedural logic as external references delegated to the host engine or language.
 * Eliminate as much syntax noise as possible to hew as closely as code can to the visual programming nature of statecharts.
 * Explore the question: "what would it look like if statecharts were a first class language feature as common as `enum` or `switch` statements?"
-* Align around a core simplified subset of a recent consensus around statechart semantics, the [W3C SCXML specification](https://www.w3.org/TR/scxml/).
+* Align on a core simplified subset of a recent consensus around statechart semantics, the [W3C SCXML specification](https://www.w3.org/TR/scxml/).
 
 ## Example
 
@@ -91,5 +91,5 @@ machine formInput {
   * visualization and step simulation
 * `xstate-StatesML` - a TypeScript library to generate [XState](https://xstate.js.org) compatible machine definitions from StatesML.
 * `statesml-tag` - a JavaScript template literal tag that parses StatesML into the StatesML state graph
-* `webpack-loader-statesml` - a WebPack loader for `.statesml` and `statesml.json` files
+* `webpack-statesml-loader` - a WebPack loader for `.statesml` and `statesml.json` files
 * `vite-plugin-statesml` - a Vite plugin to import `.statesml` and `statesml.json` files

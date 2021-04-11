@@ -51,9 +51,9 @@ history_definition: history_type? History state_identifier history_block?;
 history_type: Deep | Shallow;
 history_block: OpenBrace EOL+ (default_definition EOL+)* CloseBrace;
 
-initial_definition: Initial regular_transition_clause? action_block?;
+initial_definition: Initial transition_clause? action_block?;
 
-default_definition: Default regular_transition_clause? action_block?;
+default_definition: Default transition_clause? action_block?;
 
 entry_definition: Entry action_block;
 
@@ -61,7 +61,8 @@ exit_definition: Exit action_block;
 
 always_definition: Always re_enterable_transition_clause? transition_condition? action_block?;
 
-transition_definition: On event_name re_enterable_transition_clause? transition_condition? action_block?;
+transition_definition: On event_descriptors re_enterable_transition_clause? transition_condition? action_block?;
+event_descriptors: event_descriptor (Comma event_descriptor)*;
 
 invoke_definition: Invoke service_reference invoke_block?;
 invoke_block: OpenBrace EOL+ (invoke_block_statement EOL+)* CloseBrace;
@@ -78,18 +79,16 @@ return_definition: Return result_reference;
 
 action_block: OpenBrace EOL+ (action_reference EOL+)* CloseBrace;
 
-event_name: event_name_segment (Period event_name_segment)* (Period event_name_segment?)?;
-event_name_segment: identifier | Asterisk;
-
-regular_transition_clause: regular_transition_type transition_target;
+transition_clause: normal_transition_type transition_target;
 re_enterable_transition_clause: transition_type transition_target;
 
-transition_type: regular_transition_type | re_enter_transition_type;
+transition_type: normal_transition_type | re_enter_transition_type;
+
 transition_target: state_identifier (Comma state_identifier)*;
 transition_condition: If condition_reference;
 
-regular_transition_type: RightArrow | RightArrowSymbol;
-re_enter_transition_type: ReEnter | ReEnterSymbol;
+normal_transition_type: RightArrow;
+re_enter_transition_type: ReEnter;
 
 action_reference: external_reference;
 condition_reference: external_reference;
@@ -102,6 +101,8 @@ machine_identifier: identifier;
 state_identifier: identifier;
 
 identifier: keyword | Identifier;
+event_name: identifier | EventName;
+event_descriptor: event_name | WildcardEventDescriptor;
 
 keyword
     : Machine
@@ -130,13 +131,16 @@ OpenParen: '(';
 CloseParen: ')';
 OpenBrace: '{';
 CloseBrace: '}';
-RightArrow: '->';
-RightArrowSymbol: '→';
-ReEnter: 're-enter';
-ReEnterSymbol: '⟳';
-Asterisk: '*';
 Comma: ',';
-Period: '.';
+
+RightArrow
+    : '->' 
+    | '→'
+    ;
+ReEnter
+    : 're-enter' 
+    | '⟳'
+    ;
 
 Machine: 'machine';
 State: 'state';
@@ -157,19 +161,27 @@ OnDone: 'onDone';
 OnError: 'onError';
 Return: 'return';
 
-fragment Emoji: [\p{Emoji}\p{Join_Control}\p{Variation_Selector}];
-
-fragment IdStart
-    : [\p{ID_Start}]
-    | Emoji
-    ;
+fragment IdStart: [\p{XID_Start}];
 
 fragment IdContinue
-    : [\p{ID_Continue}]
-    | Emoji
+    : [\p{XID_Continue}]
+    | '-'
+    | '.'
     ;
 
 Identifier: IdStart IdContinue*;
+
+fragment EventNameContinue
+    : IdContinue 
+    | ':'
+    ;
+
+EventName: IdStart (EventNameContinue+);
+
+WildcardEventDescriptor
+    : '*' 
+    | IdStart EventNameContinue* '.*'
+    ;
 
 DocBlockComment: '/**' .*? '*/' -> channel(HIDDEN);
 DocLineComment: '///' ~[\r\n]* -> channel(HIDDEN);
