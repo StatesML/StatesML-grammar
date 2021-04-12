@@ -1,5 +1,5 @@
 // Adapted from https://xstate.js.org/docs/guides/final.html#parallel-states
-machine light_machine {
+machine 🚦 {
   initial -> green
 
   state green {

@@ -161,10 +161,11 @@ OnDone: 'onDone';
 OnError: 'onError';
 Return: 'return';
 
-fragment IdStart: [\p{XID_Start}];
+// See: https://unicode.org/reports/tr31/#Immutable_Identifier_Syntax
+fragment IdStart: ~[\p{Pattern_White_Space}\p{Pattern_Syntax}\p{General_Category=Private_Use}\p{Surrogate}\p{Control}\p{Noncharacter_Code_Point}];
 
 fragment IdContinue
-    : [\p{XID_Continue}]
+    : IdStart
     | '-'
     | '.'
     ;
