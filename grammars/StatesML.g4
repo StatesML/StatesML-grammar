@@ -177,12 +177,15 @@ fragment EventNameContinue
     | ':'
     ;
 
-EventName: IdStart (EventNameContinue+);
+EventName: IdStart EventNameContinue+;
 
-WildcardEventDescriptor
-    : '*' 
-    | IdStart EventNameContinue* '.*'
+fragment WildcardEventDescriptorContinue
+    : EventNameContinue
+    | '*'
     ;
+
+// NOTE: post-parse validation should verify *, foo.*, foo.bar.* constraints.
+WildcardEventDescriptor: IdStart WildcardEventDescriptorContinue+;
 
 DocBlockComment: '/**' .*? '*/' -> channel(HIDDEN);
 DocLineComment: '///' ~[\r\n]* -> channel(HIDDEN);
