@@ -67,9 +67,8 @@ event_descriptors: event_descriptor (Comma event_descriptor)*;
 invoke_definition: Invoke service_reference invoke_block?;
 invoke_block: OpenBrace EOL+ (invoke_block_statement EOL+)* CloseBrace;
 invoke_block_statement
-    : on_done_definition 
-    | on_error_definition 
-    | return_definition
+    : on_done_definition
+    | on_error_definition
     ;
 
 on_done_definition: OnDone re_enterable_transition_clause? transition_condition? action_block?;
