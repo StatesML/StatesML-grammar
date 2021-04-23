@@ -86,8 +86,8 @@ transition_type: normal_transition_type | re_enter_transition_type;
 transition_target: state_identifier (Comma state_identifier)*;
 transition_condition: If condition_reference;
 
-normal_transition_type: RightArrow;
-re_enter_transition_type: ReEnter;
+normal_transition_type: NormalTransition;
+re_enter_transition_type: ReEnterTransition;
 
 action_reference: external_reference;
 condition_reference: external_reference;
@@ -122,6 +122,7 @@ keyword
     | OnDone
     | OnError
     | Return
+    | ReEnter
     ;
 
 // Lexer
@@ -132,14 +133,19 @@ OpenBrace: '{';
 CloseBrace: '}';
 Comma: ',';
 
-RightArrow
-    : '->' 
-    | '→'
+NormalTransition
+    : RightArrow
+    | RightArrowSymbol
     ;
-ReEnter
-    : 're-enter' 
-    | '⟳'
+RightArrow: '->';
+RightArrowSymbol: '→';
+
+ReEnterTransition
+    : ReEnter
+    | ReEnterSymbol
     ;
+ReEnter: 're-enter';
+ReEnterSymbol: '⟳';
 
 Machine: 'machine';
 State: 'state';
