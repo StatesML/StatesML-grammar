@@ -4,15 +4,16 @@ grammar StatesML;
 
 document: EOL* machine_definition EOL* EOF;
 
-machine_definition: Machine machine_identifier machine_block;
+machine_definition: Machine machine_identifier? machine_block;
 machine_block: OpenBrace EOL+ (machine_block_statement EOL+)* CloseBrace;
 machine_block_statement
     : initial_definition
     | state_definition
     | parallel_definition
-    | final_definition;
+    | final_definition
+    ;
 
-state_definition: State state_identifier state_block?;
+state_definition: State state_identifier? state_block?;
 state_block: OpenBrace EOL+ (state_block_statement EOL+)* CloseBrace;
 state_block_statement
     : initial_definition
@@ -25,9 +26,10 @@ state_block_statement
     | final_definition
     | history_definition
     | invoke_definition
-    | on_done_definition;
+    | on_done_definition
+    ;
 
-parallel_definition: Parallel state_identifier parallel_block?;
+parallel_definition: Parallel state_identifier? parallel_block?;
 parallel_block: OpenBrace EOL+ (parallel_block_statement EOL+)* CloseBrace;
 parallel_block_statement
     : entry_definition
@@ -38,16 +40,18 @@ parallel_block_statement
     | parallel_definition
     | history_definition
     | invoke_definition
-    | on_done_definition;
+    | on_done_definition
+    ;
 
-final_definition: Final state_identifier final_block?;
+final_definition: Final state_identifier? final_block?;
 final_block: OpenBrace EOL+ (final_block_statement EOL+)* CloseBrace;
 final_block_statement
     : entry_definition
     | exit_definition
-    | return_definition;
+    | return_definition
+    ;
 
-history_definition: history_type? History state_identifier history_block?;
+history_definition: history_type? History state_identifier? history_block?;
 history_type: Deep | Shallow;
 history_block: OpenBrace EOL+ (default_definition EOL+)* CloseBrace;
 
@@ -201,5 +205,6 @@ LineComment: '//' ~[\r\n]* -> channel(HIDDEN);
 EOL
     : '\r'
     | '\n'
-    | '\r\n';
+    | '\r\n'
+    ;
 WS: [ \t\u0000\u000B\u000C]+ -> skip;
