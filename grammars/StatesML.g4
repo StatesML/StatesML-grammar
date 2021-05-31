@@ -2,7 +2,7 @@ grammar StatesML;
 
 // Parser
 
-document: EOL* machine_definition EOL* EOF;
+document: EOL* machine_definition* EOL* EOF;
 
 machine_definition: Machine machine_identifier? machine_block;
 machine_block: OpenBrace EOL+ (machine_block_statement EOL+)* CloseBrace;
