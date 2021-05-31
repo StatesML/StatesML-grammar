@@ -82,12 +82,12 @@ return_definition: Return result_reference;
 
 action_block: OpenBrace EOL+ (action_reference EOL+)* CloseBrace;
 
-transition_clause: normal_transition_type transition_target;
-re_enterable_transition_clause: transition_type transition_target;
+transition_clause: normal_transition_type transition_targets;
+re_enterable_transition_clause: transition_type transition_targets;
 
 transition_type: normal_transition_type | re_enter_transition_type;
 
-transition_target: state_identifier (Comma state_identifier)*;
+transition_targets: state_identifier (Comma state_identifier)*;
 transition_condition: If condition_reference;
 
 normal_transition_type: NormalTransition;
